@@ -83,8 +83,9 @@ movies = [
     },
 ]
 
-# Задание 1 
+# Задание 1
 # Напишите три функции для базовой статистики каталога
+
 
 def average_rating(movies):
     total_rating = 0
@@ -97,16 +98,17 @@ def average_rating(movies):
     avg = round(total_rating / count, 1)
     return avg
 
+
 def catalog_age_stats(movies, current_year=2026):
     ages = []
     for movie in movies:
-
         age = current_year - movie["year"]
         ages.append(age)
 
     avg = math.ceil(sum(ages) / len(ages))
 
     return (max(ages), min(ages), avg)
+
 
 def duration_in_hours(minutes):
     hours = minutes // 60
@@ -115,7 +117,7 @@ def duration_in_hours(minutes):
     return f"{hours}ч {remaining_minutes}м"
 
 
-# Задача 2 
+# Задача 2
 def rating_tier(rating):
     if rating >= 9:
         return "шедевр"
@@ -136,25 +138,23 @@ def decade_label(year):
 
 
 # Задача 3
-for movie in movies:
-    if "comedy" in movie["genres"]:
-        continue
+def print_non_comedies(movies):
+    for movie in movies:
+        if "comedy" in movie["genres"]:
+            continue
+        print(movie["title"])
+
+
+def print_first_masterpiece(movies):
+    index = 0
+    while index < len(movies):
+        movie = movies[index]
+        if movie["rating"] > 9.0:
+            print(movie["title"])
+            break
+        index += 1
     else:
-        print(movie["title"])
-
-
-index = 0
-while index < len(movies):
-    movie = movies[index]
-
-    if movie["rating"] > 9.0:
-        print(movie["title"])
-        break
-
-    index += 1
-else:
-    print("Шедевров не найдено")
-
+        print("Шедевров не найдено")
 
 
 def count_long_movies(movies, threshold=120):
@@ -165,7 +165,8 @@ def count_long_movies(movies, threshold=120):
             count += 1
     return count
 
-# Задача 4 
+
+# Задача 4
 def normalize_title(title):
     words = title.split()
     normalized_words = []
@@ -189,7 +190,17 @@ def format_report_line(movie):
     duration = duration_in_hours(movie["duration_min"])
     genres = ", ".join(sorted(movie["genres"]))
 
-    return (
-        f'"{title}" ({year}) — {rating}/10, '
-        f"{duration}, жанры: {genres}"
-    )
+    return f'"{title}" ({year}) — {rating}/10, {duration}, жанры: {genres}'
+
+
+# Этап 5. Списки
+def titles_sorted_by_rating(movies):
+    return [
+        movie["title"]
+        for movie in sorted(movies, key=lambda movie: movie["rating"], reverse=True)
+    ]
+
+
+def top_n_by_rating(movies, n=3):
+    ranked = sorted(movies, key=lambda movie: movie["rating"], reverse=True)
+    return [(movie["title"], movie["rating"]) for movie in ranked[:n]]
