@@ -133,3 +133,63 @@ def decade_label(year):
             return "недавние"
         case _:
             return "старые"
+
+
+# Задача 3
+for movie in movies:
+    if "comedy" in movie["genres"]:
+        continue
+    else:
+        print(movie["title"])
+
+
+index = 0
+while index < len(movies):
+    movie = movies[index]
+
+    if movie["rating"] > 9.0:
+        print(movie["title"])
+        break
+
+    index += 1
+else:
+    print("Шедевров не найдено")
+
+
+
+def count_long_movies(movies, threshold=120):
+    count = 0
+
+    for movie in movies:
+        if movie["duration_min"] > threshold:
+            count += 1
+    return count
+
+# Задача 4 
+def normalize_title(title):
+    words = title.split()
+    normalized_words = []
+
+    for word in words:
+        normalized_word = word[0].upper() + word[1:]
+        normalized_words.append(normalized_word)
+
+    return " ".join(normalized_words)
+
+
+def make_slug(title):
+    normalized_title = normalize_title(title)
+    return normalized_title.lower().replace(" ", "-")
+
+
+def format_report_line(movie):
+    title = normalize_title(movie["title"])
+    year = movie["year"]
+    rating = movie["rating"]
+    duration = duration_in_hours(movie["duration_min"])
+    genres = ", ".join(sorted(movie["genres"]))
+
+    return (
+        f'"{title}" ({year}) — {rating}/10, '
+        f"{duration}, жанры: {genres}"
+    )
